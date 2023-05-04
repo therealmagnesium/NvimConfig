@@ -1,21 +1,21 @@
 local ensure_packer = function()
-  local fn = vim.fn
-  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-  if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
-    vim.cmd [[packadd packer.nvim]]
-    return true
-  end
-  return false
+    local fn = vim.fn
+    local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+    if fn.empty(fn.glob(install_path)) > 0 then
+        fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+        vim.cmd [[packadd packer.nvim]]
+        return true
+    end
+    return false
 end
-
+ 
 local packer_bootstrap = ensure_packer()
 
 vim.cmd([[
-  augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost plugins-setup.lua source <afile> | PackerSync
-  augroup end
+augroup packer_user_config
+autocmd!
+autocmd BufWritePost plugins-setup.lua source <afile> | PackerSync
+augroup end
 ]])
 
 local status, packer = pcall(require, "packer")
@@ -31,27 +31,7 @@ return packer.startup(function(use)
     use("nvim-lualine/lualine.nvim")
     use("nvim-treesitter/nvim-treesitter", {run = ":TSUpdate"})
 
-    -- lsp shit
-    use {
-        'VonHeikemen/lsp-zero.nvim',
-        branch = 'v2.x',
-        requires = {
-            -- LSP Support
-            {'neovim/nvim-lspconfig'},             -- Required
-            {                                      -- Optional
-            'williamboman/mason.nvim',
-            run = function()
-                pcall(vim.cmd, 'MasonUpdate')
-            end,
-        },
-        {'williamboman/mason-lspconfig.nvim'}, -- Optional
-
-        -- Autocompletion
-        {'hrsh7th/nvim-cmp'},     -- Required
-        {'hrsh7th/cmp-nvim-lsp'}, -- Required
-        {'L3MON4D3/LuaSnip'},     -- Required
-    }
-}
+    use {'neoclide/coc.nvim', branch = 'release'}
 
     if packer_bootstrap then
         require("packer").sync()

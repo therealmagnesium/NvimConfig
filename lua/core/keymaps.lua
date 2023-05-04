@@ -10,10 +10,10 @@ key.set("n", "<leader>-", "<C-x>")
 key.set("n", "<leader>nh", ":nohl<CR>")
 key.set("n", "<leader>pv", ":Ex<CR>")
 
-key.set("n", "<leader>sv", "<C-w>v")
-key.set("n", "<leader>sh", "<C-w>s")
-key.set("n", "<leader>se", "<C-w>=")
-key.set("n", "<leader>sx", ":close<CR>")
+key.set("n", "<leader>wv", "<C-w>v")
+key.set("n", "<leader>wh", "<C-w>s")
+key.set("n", "<leader>we", "<C-w>=")
+key.set("n", "<leader>wx", ":close<CR>")
 
 key.set("n", "<C-z>", ":u<CR>")
 key.set("n", "<C-y>", "<C-r>")
@@ -25,7 +25,7 @@ key.set("v", "K", ":m '<-2<CR>gv=gv")
 ------------------------------
 
 --Files-----------------------
-key.set("n", "<leader>sp", ":w<CR>")
+key.set("n", "<leader>wr", ":w<CR>")
 key.set("n", "<leader>it", ":wq<CR>")
 key.set("n", "<leader>xt", ":q!<CR>")
 
