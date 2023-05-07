@@ -1,12 +1,9 @@
-local status, theme = pcall(require, "catppuccin")
+local status, _ = pcall(require, "material")
 
 if not status then
     print("Colorscheme wasn't found!")
     return
 end
 
-theme.setup({
-    flavour = "Mocha"
-})
-
-vim.cmd.colorscheme "catppuccin"
+require('material.functions').change_style("deep ocean")
+vim.cmd.colorscheme "material"

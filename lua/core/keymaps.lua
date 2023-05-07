@@ -22,12 +22,14 @@ key.set("n", "<C-u>", "<C-u>zz")
 
 key.set("v", "J", ":m '>+1<CR>gv=gv")
 key.set("v", "K", ":m '<-2<CR>gv=gv")
+
+key.set("x", "<leader>p", "\"_dp")
 ------------------------------
 
 --Files-----------------------
 key.set("n", "<leader>wr", ":w<CR>")
-key.set("n", "<leader>it", ":wq<CR>")
-key.set("n", "<leader>xt", ":q!<CR>")
+key.set("n", "<leader>gs", ":wq<CR>")
+key.set("n", "<leader>gn", ":q!<CR>")
 
 key.set("n", "<leader>so", ":so %<CR>")
 ------------------------------

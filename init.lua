@@ -8,3 +8,5 @@ require("core.lsp")
 require("plugins.nvim-tree")
 require("plugins.lualine")
 require("plugins.treesitter")
+require("plugins.telescope")
+
