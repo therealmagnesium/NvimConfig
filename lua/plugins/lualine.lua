@@ -27,7 +27,7 @@ lualine_nightfly.command = {
 
 lualine.setup({
     options = {
-        theme = "tokyonight"
+        theme = "horizon" 
     }
 })
 

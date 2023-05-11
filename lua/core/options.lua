@@ -2,9 +2,19 @@ local opt = vim.opt
 
 --Basics--------------------
 opt.number = true
+opt.relativenumber = true
+
 opt.wrap = false
 opt.cursorline = true
-opt.syntax = "on"
+
+opt.hlsearch = false
+opt.incsearch = true
+
+opt.scrolloff = 10
+opt.signcolumn = "yes"
+opt.isfname:append("@-@")
+
+opt.updatetime = 50
 ----------------------------
 
 --Indenting-----------------
@@ -16,10 +26,13 @@ opt.autoindent = true
 ----------------------------
 
 --Searching-----------------
+opt.hlsearch = false
+opt.incsearch = true
 opt.ignorecase = true
 opt.smartcase = true
 
 --Appearance----------------
+opt.syntax = "on"
 opt.termguicolors = true
 opt.background = "dark"
 opt.splitright = true

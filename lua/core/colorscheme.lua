@@ -1,9 +1,20 @@
-local status, _ = pcall(require, "material")
+local status, _ = pcall(require, "catppuccin")
 
-if not status then
-    print("Colorscheme wasn't found!")
-    return
+function ColorAll()
+    if not status then
+        print("Colorscheme wasn't found!")
+        return
+    end
+
+    vim.cmd.colorscheme "catppuccin"
+
+    vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+    vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+    vim.api.nvim_set_hl(0, "NormalNC", {bg = "none" })
+
+    require("catppuccin").setup({
+        transparent_background = false 
+    })
 end
 
-require('material.functions').change_style("deep ocean")
-vim.cmd.colorscheme "material"
+ColorAll()
