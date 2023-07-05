@@ -29,8 +29,29 @@ return packer.startup(function(use)
     use("nvim-tree/nvim-tree.lua")
     use("nvim-tree/nvim-web-devicons")
     use("nvim-lualine/lualine.nvim")
+    use("m4xshen/autoclose.nvim")
     use("nvim-treesitter/nvim-treesitter", {run = ":TSUpdate"})
-    use {'neoclide/coc.nvim', branch = 'release'}
+
+    use {
+        'VonHeikemen/lsp-zero.nvim',
+        branch = 'v2.x',
+        requires = {
+            -- LSP Support
+            {'neovim/nvim-lspconfig'},             -- Required
+            {                                      -- Optional
+            'williamboman/mason.nvim',
+            run = function()
+                pcall(vim.cmd, 'MasonUpdate')
+            end,
+        },
+        {'williamboman/mason-lspconfig.nvim'}, -- Optional
+
+        -- Autocompletion
+        {'hrsh7th/nvim-cmp'},     -- Required
+        {'hrsh7th/cmp-nvim-lsp'}, -- Required
+        {'L3MON4D3/LuaSnip'},     -- Required
+        }
+    }
 
     use {
         'nvim-telescope/telescope.nvim', tag = '0.1.1',
