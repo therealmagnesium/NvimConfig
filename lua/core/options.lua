@@ -23,8 +23,9 @@ vim.opt.cindent = true
 vim.opt.wrap = false
 vim.opt.scrolloff = 8
 vim.opt.updatetime = 50
+vim.opt.foldmethod = "manual"
 vim.opt.signcolumn = "yes"
 
 -- Searching
-vim.opt.hlsearch = true
+vim.opt.hlsearch = false
 vim.opt.incsearch = true
