@@ -1,4 +1,4 @@
-local theme = "catppuccin"
+local theme = "kanagawa"
 
 local C = {
 	"catppuccin/nvim",
@@ -19,10 +19,12 @@ local K = {
 
 	config = function()
 		require("kanagawa").setup({
-			transparent = false,
+			transparent = true,
 		})
 		vim.cmd("colorscheme " .. theme)
 		vim.api.nvim_set_hl(0, "LineNr", { bg = "none" })
+		vim.api.nvim_set_hl(0, "CursorLineNr", { bg = "none" })
+		vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 		vim.api.nvim_set_hl(0, "SignColumn", { bg = "none" })
 	end,
 }
@@ -72,4 +74,4 @@ local N = {
 	end,
 }
 
-return C
+return K

@@ -27,13 +27,16 @@ local M = {
 
             lspconfig.bashls.setup({ capabilities = capabilities })
             lspconfig.clangd.setup({ capabilities = capabilities })
-            lspconfig.csharp_ls.setup({ capabilities = capabilities })
+            --lspconfig.csharp_ls.setup({ capabilities = capabilities })
             lspconfig.glsl_analyzer.setup({ capabilities = capabilities })
+            lspconfig.html.setup({ capabilities = capabilities })
             lspconfig.lua_ls.setup({ capabilities = capabilities })
-            --lspconfig.omnisharp.setup({ capabilities = capabilities })
+            lspconfig.omnisharp.setup({ capabilities = capabilities })
+            lspconfig.tsserver.setup({ capabilities = capabilities })
 
             vim.keymap.set("n", "K", vim.lsp.buf.hover)
             vim.keymap.set("n", "gd", vim.lsp.buf.definition)
+            vim.keymap.set("n", "gD", vim.lsp.buf.declaration)
             vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action)
         end,
     },
