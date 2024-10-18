@@ -30,8 +30,20 @@ local M = {
             --lspconfig.csharp_ls.setup({ capabilities = capabilities })
             lspconfig.glsl_analyzer.setup({ capabilities = capabilities })
             lspconfig.html.setup({ capabilities = capabilities })
-            lspconfig.lua_ls.setup({ capabilities = capabilities })
-            lspconfig.omnisharp.setup({ capabilities = capabilities })
+            lspconfig.jedi_language_server.setup({ capabilities = capabilities })
+
+            lspconfig.lua_ls.setup({
+                capabilities = capabilities,
+                settings = {
+                    Lua = {
+                        diagnostics = {
+                            globals = { "vim" },
+                        },
+                    },
+                },
+            })
+
+            lspconfig.csharp_ls.setup({ capabilities = capabilities })
             lspconfig.tsserver.setup({ capabilities = capabilities })
 
             vim.keymap.set("n", "K", vim.lsp.buf.hover)

@@ -1,10 +1,10 @@
 local M = {
-	"windwp/nvim-autopairs",
-	event = "InsertEnter",
+    "windwp/nvim-autopairs",
+    event = "InsertEnter",
 
-	config = function()
-		require("nvim-autopairs").setup({})
-	end,
+    config = function()
+        require("nvim-autopairs").setup({})
+    end,
 }
 
 return M

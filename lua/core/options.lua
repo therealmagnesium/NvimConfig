@@ -1,4 +1,6 @@
 vim.g.mapleader = " "
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
 
 vim.opt.guicursor = "" -- Fat cursor
 
@@ -17,7 +19,7 @@ vim.opt.shiftwidth = 4
 -- Indenting
 vim.opt.autoindent = true
 vim.opt.smartindent = true
-vim.opt.cindent = true
+--vim.opt.cindent = true
 
 -- Functionality
 vim.opt.wrap = false
