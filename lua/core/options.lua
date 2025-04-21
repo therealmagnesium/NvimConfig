@@ -24,10 +24,11 @@ vim.opt.cindent = true
 
 -- Functionality
 vim.opt.wrap = false
-vim.opt.scrolloff = 8
+vim.opt.scrolloff = 12
 vim.opt.updatetime = 50
 vim.opt.foldmethod = "manual"
 vim.opt.signcolumn = "yes"
+vim.opt.isfname:append("@-@")
 
 -- Searching
 vim.opt.hlsearch = false

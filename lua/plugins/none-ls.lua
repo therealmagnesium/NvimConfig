@@ -8,7 +8,7 @@ local M = {
             sources = {
                 null_ls.builtins.formatting.clang_format,
                 null_ls.builtins.formatting.shfmt,
-                null_ls.builtins.formatting.stylua,
+                --null_ls.builtins.formatting.stylua,
             },
 
             on_attach = function(client, bufnr)
@@ -18,8 +18,6 @@ local M = {
                         group = augroup,
                         buffer = bufnr,
                         callback = function()
-                            -- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
-                            -- on later neovim version, you should use vim.lsp.buf.format({ async = false }) instead
                             vim.lsp.buf.format()
                         end,
                     })

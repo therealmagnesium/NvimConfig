@@ -17,6 +17,8 @@ vim.keymap.set("n", "N", "Nzzzv")
 vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "<C-z>", "u")
 
+vim.keymap.set("n", "<C-x>", '"+y')
+
 -- Insert mode
 vim.keymap.set("i", "<C-c>", "<Esc>")
 vim.keymap.set("i", "<C-s>", "<C-c>:w<CR>")
@@ -26,4 +28,5 @@ vim.keymap.set("i", "<C-z>", "<C-c>u")
 -- Visual mode
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+vim.keymap.set("v", "<C-x>", '"+y')
 vim.keymap.set("x", "<leader>p", '"_dP')
