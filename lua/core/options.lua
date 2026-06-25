@@ -1,6 +1,7 @@
 vim.g.mapleader = " "
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
+vim.g.load_doxygen_syntax = 1
 
 vim.opt.guicursor = "" -- Fat cursor
 
@@ -33,3 +34,6 @@ vim.opt.isfname:append("@-@")
 -- Searching
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
+
+--vim.env.CMAKE_POLICY_VERSION_MINIMUM = "3.5"
+--vim.env.CXXFLAGS = "-include cstdint"

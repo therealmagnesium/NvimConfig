@@ -1,48 +1,86 @@
+--[[
 local M = {
-    {
-        "hrsh7th/cmp-nvim-lsp",
-    },
-    {
-        "L3MON4D3/LuaSnip",
-        dependencies = {
-            "saadparwaiz1/cmp_luasnip",
-            "rafamadriz/friendly-snippets",
-        },
-    },
-    {
-        "hrsh7th/nvim-cmp",
+	"saghen/blink.cmp",
+	dependencies = { "rafamadriz/friendly-snippets" },
+	version = "1.*",
+	opts = {
+		-- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
+		-- 'super-tab' for mappings similar to vscode (tab to accept)
+		-- 'enter' for enter to accept
+		-- 'none' for no mappings
+		--
+		-- All presets have the following mappings:
+		-- C-space: Open menu or open docs if already open
+		-- C-n/C-p or Up/Down: Select next/previous item
+		-- C-e: Hide menu
+		-- C-k: Toggle signature help (if signature.enabled = true)
+		--
+		-- See :h blink-cmp-config-keymap for defining your own keymap
+		keymap = { preset = "default" },
 
-        config = function()
-            local cmp = require("cmp")
-            local vsc_snippets = require("luasnip.loaders.from_vscode")
-            vsc_snippets.lazy_load()
+		appearance = {
+			nerd_font_variant = "mono",
+		},
 
-            cmp.setup({
-                snippet = {
-                    expand = function(args)
-                        require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
-                    end,
-                },
-                window = {
-                    completion = cmp.config.window.bordered(),
-                    documentation = cmp.config.window.bordered(),
-                },
-                mapping = cmp.mapping.preset.insert({
-                    ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-                    ["<C-f>"] = cmp.mapping.scroll_docs(4),
-                    ["<C-Space>"] = cmp.mapping.complete(),
-                    ["<C-e>"] = cmp.mapping.abort(),
-                    ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-                }),
-                sources = cmp.config.sources({
-                    { name = "nvim_lsp" },
-                    { name = "luasnip" }, -- For luasnip users.
-                }, {
-                    { name = "buffer" },
-                }),
-            })
-        end,
-    },
+		completion = {
+			documentation = {
+				auto_show = true,
+				treesitter_highlighting = true,
+				draw = function(opts)
+					if opts.item and opts.item.documentation and opts.item.documentation.value then
+						local out = require("pretty_hover.parser").parse(opts.item.documentation.value)
+						opts.item.documentation.value = out:string()
+					end
+
+					opts.default_implementation(opts)
+				end,
+			},
+		},
+		-- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
+		-- You may use a lua implementation instead by using `implementation = "lua"` or fallback to the lua implementation,
+		-- when the Rust fuzzy matcher is not available, by using `implementation = "prefer_rust"`
+		--
+		-- See the fuzzy documentation for more information
+		fuzzy = { implementation = "prefer_rust_with_warning" },
+	},
+}
+
+return M
+
+--]]
+local M = {
+	"saghen/blink.cmp",
+	dependencies = { "rafamadriz/friendly-snippets" },
+	version = "1.*",
+	opts = {
+		keymap = { preset = "default" },
+
+		appearance = {
+			nerd_font_variant = "mono",
+		},
+
+		completion = {
+			documentation = {
+				auto_show = true,
+				treesitter_highlighting = true,
+				draw = function(opts)
+					-- ADDED: type(opts.item.documentation) == "table"
+					if
+						opts.item
+						and opts.item.documentation
+						and type(opts.item.documentation) == "table"
+						and opts.item.documentation.value
+					then
+						local out = require("pretty_hover.parser").parse(opts.item.documentation.value)
+						opts.item.documentation.value = out:string()
+					end
+
+					opts.default_implementation(opts)
+				end,
+			},
+		},
+		fuzzy = { implementation = "prefer_rust_with_warning" },
+	},
 }
 
 return M

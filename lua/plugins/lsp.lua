@@ -1,29 +1,94 @@
 local M = {
-    {
-        "williamboman/mason.nvim",
+	{
+		"williamboman/mason.nvim",
 
-        config = function()
-            require("mason").setup()
-        end,
-    },
-    {
-        "neovim/nvim-lspconfig",
+		config = function()
+			require("mason").setup()
+		end,
+	},
+	{
+		"neovim/nvim-lspconfig",
 
-        config = function()
-            local lspconfig = require("lspconfig")
-            local cmp_lsp = require("cmp_nvim_lsp")
-            local capabilites = cmp_lsp.default_capabilities()
+		config = function()
+			local capabilities = vim.lsp.protocol.make_client_capabilities()
+			capabilities.textDocument.hover.contentFormat = { "markdown", "plaintext" }
+			capabilities.textDocument.completion.completionItem.documentationFormat = { "markdown", "plaintext" }
 
-            vim.lsp.enable("bashls")
-            vim.lsp.enable("clangd")
-            --vim.lsp.enable("eslint")
-            vim.lsp.enable("glsl_analyzer")
-            vim.lsp.enable("html")
-            vim.lsp.enable("jedi_language_server")
-            vim.lsp.enable("lua_ls")
-            vim.lsp.enable("ts_ls")
+			-- Patch open_floating_preview to fix clangd's hover rendering
+			local orig_open_floating_preview = vim.lsp.util.open_floating_preview
+			vim.lsp.util.open_floating_preview = function(contents, syntax, opts, ...)
+				-- Strip backslash escaping clangd adds to underscores in markdown
+				-- e.g. text\_size -> text_size, Utils\_MeasureText -> Utils_MeasureText
+				for i, line in ipairs(contents) do
+					contents[i] = line:gsub("\\([_*])", "%1")
+				end
+				local bufnr, winnr = orig_open_floating_preview(contents, syntax, opts, ...)
+				if winnr and vim.api.nvim_win_is_valid(winnr) then
+					-- conceallevel=2 as a fallback in case any \ escapes slip through
+					vim.wo[winnr].conceallevel = 2
+					vim.wo[winnr].concealcursor = "n"
+				end
+				return bufnr, winnr
+			end
 
---[[
+			vim.lsp.enable("bashls")
+
+			vim.lsp.config("clangd", {
+				capabilities = capabilities,
+			})
+			vim.lsp.enable("clangd")
+
+			--vim.lsp.enable("eslint")
+
+			vim.lsp.config["glsld"] = {
+				cmd = { "glsld" },
+				filetypes = { "glsl", "vert", "tesc", "tese", "geom", "frag", "comp" },
+				root_markers = { ".git", "compile_commands.json" },
+			}
+
+			vim.lsp.enable("glsld")
+
+			vim.lsp.enable("html")
+			vim.lsp.enable("jedi_language_server")
+
+			vim.lsp.config("lua_ls", {
+				on_init = function(client)
+					if client.workspace_folders then
+						local path = client.workspace_folders[1].name
+						if
+							path ~= vim.fn.stdpath("config")
+							and (vim.uv.fs_stat(path .. "/.luarc.json") or vim.uv.fs_stat(path .. "/.luarc.jsonc"))
+						then
+							return
+						end
+					end
+
+					client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
+						runtime = {
+							version = "LuaJIT",
+							path = {
+								"../init.lua",
+							},
+						},
+
+						-- Make the server aware of Neovim runtime files
+						workspace = {
+							checkThirdParty = false,
+							library = {
+								vim.env.VIMRUNTIME,
+							},
+						},
+					})
+				end,
+				settings = {
+					Lua = {},
+				},
+			})
+			vim.lsp.enable("lua_ls")
+
+			vim.lsp.enable("ts_ls")
+
+			--[[
             lspconfig.bashls.setup({ capabilites = capabilites })
             lspconfig.clangd.setup({ capabilites = capabilites })
             lspconfig.csharp_ls.setup({ capabilites = capabilites })
@@ -33,46 +98,7 @@ local M = {
             lspconfig.jedi_language_server.setup({ capabilites = capabilites })
             lspconfig.ts_ls.setup({ capabilites = capabilites }) --]]
 
-            vim.lsp.config('lua_ls', {
-                on_init = function(client)
-                    if client.workspace_folders then
-                        local path = client.workspace_folders[1].name
-                        if
-                            path ~= vim.fn.stdpath('config')
-                            and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc'))
-                        then
-                            return
-                        end
-                    end
-
-                    client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
-                        runtime = {
-                            -- Tell the language server which version of Lua you're using (most
-                            -- likely LuaJIT in the case of Neovim)
-                            version = 'LuaJIT',
-                            -- Tell the language server how to find Lua modules same way as Neovim
-                            -- (see `:h lua-module-load`)
-                            path = {
-                                'lua/?.lua',
-                                'lua/?/init.lua',
-                            },
-                        },
-
-                        -- Make the server aware of Neovim runtime files
-                        workspace = {
-                            checkThirdParty = false,
-                            library = {
-                                vim.env.VIMRUNTIME
-                            }
-                        }
-                    })
-                end,
-                settings = {
-                    Lua = {}
-                }
-            })
-
-            --[[
+			--[[
             lspconfig.lua_ls.setup({
                 capabilites = capabilites,
                 settings = {
@@ -84,13 +110,14 @@ local M = {
                 },
             })--]]
 
-            vim.keymap.set("n", "K", vim.lsp.buf.hover)
-            vim.keymap.set("n", "gd", vim.lsp.buf.definition)
-            vim.keymap.set("n", "gD", vim.lsp.buf.declaration)
-            vim.keymap.set("n", "gi", vim.lsp.buf.implementation)
-            vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action)
-        end,
-    },
+			local pretty = require("pretty_hover")
+			vim.keymap.set("n", "K", pretty.hover)
+			vim.keymap.set("n", "gd", vim.lsp.buf.definition)
+			vim.keymap.set("n", "gD", vim.lsp.buf.declaration)
+			vim.keymap.set("n", "gi", vim.lsp.buf.implementation)
+			vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action)
+		end,
+	},
 }
 
 return M

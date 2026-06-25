@@ -3,4 +3,4 @@ require("core.options")
 require("core.plugin-manager")
 
 local colorscheme = require("plugins.colorscheme")
-colorscheme.applyTheme("gruvbox-material")
+colorscheme.applyTheme("catppuccin-mocha")
